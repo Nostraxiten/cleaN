@@ -1,0 +1,107 @@
+<UserControl x:Class="CleaN.Views.ReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="820">
+
+    <Grid Margin="28,24,28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Report and logs" Style="{StaticResource Text.Title}" />
+            <TextBlock Style="{StaticResource Text.Subtitle}"
+                       Text="Every run is written to a plain text log listing each file removed and the space recovered, so any cleaning can be audited afterwards." />
+        </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource Card}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Top row: last-run summary + action buttons -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                        <TextBlock Text="Last run" FontWeight="SemiBold" Margin="0,0,0,5" />
+                        <TextBlock Text="{Binding LastRunText}" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding LogDirectory}" Style="{StaticResource Text.Mono}"
+                                   Foreground="{DynamicResource Brush.TextMuted}" Margin="0,7,0,0"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="Refresh" Command="{Binding RefreshCommand}" Margin="0,0,8,0" />
+                        <Button Content="Open log folder" Command="{Binding OpenFolderCommand}" Margin="0,0,8,0" />
+                        <Button Content="Delete all logs" Command="{Binding DeleteAllLogsCommand}" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- Bottom row: Save log files toggle -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12,0,0">
+                    <CheckBox Content="Save log files" IsChecked="{Binding WriteLog, Mode=TwoWay}"
+                              VerticalAlignment="Center" Margin="0,0,16,0" />
+                    <TextBlock Text="{Binding WriteLogHint}" Style="{StaticResource Text.Muted}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="290" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,12,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Previous runs" FontWeight="SemiBold" Margin="0,0,0,10" />
+
+                    <TextBlock Grid.Row="1" Style="{StaticResource Text.Muted}" VerticalAlignment="Top"
+                               TextWrapping="Wrap" Text="No logs yet. They appear here after the first run."
+                               Visibility="{Binding HasLogs, Converter={StaticResource NotBoolToVisibility}}" />
+
+                    <ListBox Grid.Row="1" ItemsSource="{Binding Logs}"
+                             SelectedItem="{Binding SelectedLog, Mode=TwoWay}"
+                             ItemContainerStyle="{StaticResource ListItem.Plain}"
+                             Visibility="{Binding HasLogs, Converter={StaticResource BoolToVisibility}}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource Row}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding DateText}" FontWeight="SemiBold" />
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource Text.Muted}"
+                                                   Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <TextBlock Text="{Binding LogContent}" Style="{StaticResource Text.Mono}" />
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

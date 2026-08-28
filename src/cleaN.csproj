@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>CleaN</RootNamespace>
+    <AssemblyName>cleaN</AssemblyName>
+    <ApplicationIcon>Assets\cleaN.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.2.0</Version>
+    <Product>cleaN</Product>
+    <Company>cleaN contributors</Company>
+    <Description>Open source system cleaner for Windows.</Description>
+    <Copyright>Copyright (c) 2026 cleaN contributors. MIT licensed.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Single-file, self-contained publishing: the user never needs a runtime. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      WPF projects deliberately leave System.IO out of the implicit usings, because
+      System.IO.Path would clash with System.Windows.Shapes.Path. cleaN is a file system
+      tool and needs System.IO everywhere; the shape is only ever referenced from XAML.
+    -->
+    <Using Include="System.IO" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\cleaN.ico" />
+    <Resource Include="Assets\logo.svg" />
+  </ItemGroup>
+
+</Project>

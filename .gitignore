@@ -1,0 +1,33 @@
+# Build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease-build/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VS / VS Code
+.vs/
+.idea/
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+.nuget/
+
+# Publish artefacts that are not the shipped binary
+src/bin/
+src/obj/
+*.pdb
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Python bytecode from the icon generator
+__pycache__/
+*.pyc
